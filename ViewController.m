@@ -22,8 +22,8 @@
     [super viewDidLoad];
     
     self.scrollNumbersLayer = [[KTScrollNumbersLayer alloc] initWithFrame:CGRectMake(0, 64, 320, 40)];
+    self.scrollNumbersLayer.font = [UIFont systemFontOfSize:16];
     [self.view addSubview:self.scrollNumbersLayer];
-    [self.scrollNumbersLayer startAnimation];
     
     self.button = [UIButton buttonWithType:UIButtonTypeCustom];
     self.button.frame = (CGRect){140, 180, 60, 60};
@@ -43,7 +43,6 @@
     NSString *toString = [NSString stringWithFormat:@"%d亿%d万", rand()%1000, rand()%1000];
     NSLog(@"%@----%@", fromString, toString);
     [self.scrollNumbersLayer animationFromString:toString];
-    [self.scrollNumbersLayer startAnimation];
 }
 
 @end

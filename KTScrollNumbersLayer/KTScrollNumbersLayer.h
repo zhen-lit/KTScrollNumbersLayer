@@ -15,6 +15,8 @@ typedef NS_ENUM(NSInteger, KTScrollNumbersLayerType) {
 
 @interface KTScrollNumbersLayer : UIView
 
+@property (strong, nonatomic) UIFont *font;
+
 - (void)animationFromString:(NSString *)toString;
 - (void)startAnimation;
 - (void)stopAnimation;

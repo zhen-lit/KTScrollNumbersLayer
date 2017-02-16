@@ -22,7 +22,6 @@
 @property (strong, nonatomic) NSString *toString;
 @property (assign, nonatomic) CFTimeInterval duration;
 @property (strong, nonatomic) UIColor *textColor;
-@property (strong, nonatomic) UIFont *font;
 
 @end
 
@@ -65,6 +64,7 @@
 
 - (void)animationFromString:(NSString *)toString {
     [self setToString:toString];
+    [self startAnimation];
 }
 
 - (void)startAnimation {
