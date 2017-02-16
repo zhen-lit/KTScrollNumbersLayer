@@ -135,36 +135,27 @@
 }
 
 //根据特殊字符截取
-- (NSMutableArray *)interceptWithString:(NSString *)string  {
-    NSMutableArray *interceptArray = [NSMutableArray new];
-    if (string.length > 0) {
-        if (([string rangeOfString:@"亿"].length > 0)|| ([string rangeOfString:@"万"].length > 0)) {
-            NSInteger location = 0;
-            for (NSInteger index = 0; index < string.length; index ++) {
-                NSString *temp = [string substringWithRange:NSMakeRange(index, 1)];
-                char numberChar = [temp characterAtIndex:0];
-                if (numberChar < '0' || numberChar > '9') {
-                    [interceptArray addObject:[self splitWithStringAttribute:[string substringWithRange:NSMakeRange(location, index + 1 - location)]]];
-                    location = index + 1;
-                    if (string.length > index) {
-                        [interceptArray addObject:[self splitWithStringAttribute:[string substringWithRange:(NSRange){location, string.length - location}]]];
-                    }
-                }
-            }
+- (NSMutableArray *)interceptWithString:(NSString *)text  {
+    NSMutableArray *numbersArray = [NSMutableArray array];
+    NSMutableArray *tempArray = [NSMutableArray array];
+    for (NSInteger index = 0; index < text.length; index ++) {
+        NSString *number = [text substringWithRange:(NSRange){index, 1}];
+        if ([number compare:@"0"] == NSOrderedAscending || [number compare:@"9"] == NSOrderedDescending) {
+            // 非数字
+            [tempArray addObject:number];
+            [numbersArray addObject:tempArray];
+            tempArray = [NSMutableArray array];
         } else {
-            [interceptArray addObject:[self splitWithStringAttribute:string]];
+            // 数字
+            [tempArray addObject:number];
+        }
+        
+        if (index == text.length - 1 && tempArray.count > 0) {
+            [numbersArray addObject:tempArray];
         }
     }
-    return interceptArray;
-}
+    return numbersArray;
 
-//分割
-- (NSMutableArray *)splitWithStringAttribute:(NSString *)stringAttribute {
-    NSMutableArray *splitArray = [NSMutableArray new];
-    for (NSInteger i = 0; i < stringAttribute.length; i++) {
-        [splitArray addObject:[stringAttribute substringWithRange:NSMakeRange(i, 1)]];
-    }
-    return splitArray;
 }
 
 - (void)createScrollLayers {
