@@ -62,15 +62,15 @@
     _fromString = fromString;
 }
 
-- (void)animationFromString:(NSString *)toString {
+- (void)animationFromString:(NSString *)fromString toString:(NSString *)toString {
     [self setToString:toString];
+    [self setFromString:fromString];
     [self startAnimation];
 }
 
 - (void)startAnimation {
     [self prepareAnimations];
     [self createAnimations];
-    _fromString = _toString;
 }
 
 - (void)stopAnimation {
@@ -80,6 +80,10 @@
 }
 
 - (void)prepareAnimations {
+    if ([self.fromString isEqualToString:self.toString]) {
+        return;
+    }
+    
     for(UILabel *label in scrollLabelsMutableArray){
         [label.layer removeFromSuperlayer];
     }
@@ -100,9 +104,6 @@
 
 - (void)installData {
 
-    if ([self.fromString isEqualToString:self.toString]) {
-        return;
-    }
     NSMutableArray *toMutableArray = [NSMutableArray array];
     NSMutableArray *fromMutableArray = [NSMutableArray array];
     toMutableArray = [self interceptWithString:self.toString];
@@ -136,13 +137,19 @@
 //根据特殊字符截取
 - (NSMutableArray *)interceptWithString:(NSString *)string  {
     NSMutableArray *interceptArray = [NSMutableArray new];
-    NSInteger location = 0;
-    for (NSInteger index = 0; index < string.length; index ++) {
-        NSString *temp = [string substringWithRange:NSMakeRange(index, 1)];
-        char numberChar = [temp characterAtIndex:0];
-        if (numberChar < '0' || numberChar > '9') {
-            [interceptArray addObject:[self splitWithStringAttribute:[string substringWithRange:NSMakeRange(location, index + 1 - location)]]];
-            location = index + 1;
+    if (string.length > 0) {
+        if (([string rangeOfString:@"亿"].length > 0)|| ([string rangeOfString:@"万"].length > 0)) {
+            NSInteger location = 0;
+            for (NSInteger index = 0; index < string.length; index ++) {
+                NSString *temp = [string substringWithRange:NSMakeRange(index, 1)];
+                char numberChar = [temp characterAtIndex:0];
+                if (numberChar < '0' || numberChar > '9') {
+                    [interceptArray addObject:[self splitWithStringAttribute:[string substringWithRange:NSMakeRange(location, index + 1 - location)]]];
+                    location = index + 1;
+                }
+            }
+        } else {
+            [interceptArray addObject:[self splitWithStringAttribute:string]];
         }
     }
     return interceptArray;
@@ -284,8 +291,12 @@
     for (NSInteger index = 0; index < numberLabelsMutableArray.count; index ++) {
         UILabel *numberLabel = numberLabelsMutableArray[index];
         if ([numberLabelsMutableArray[index] layer].superlayer == layer) {
-            [numberLabel removeFromSuperview];
-            [self createNumberLayer:layer withText:numbersMutableArray[index]];
+            if (self.fromString.length > 0) {
+                [numberLabel removeFromSuperview];
+                [self createNumberLayer:layer withText:numbersMutableArray[index]];
+            } else {
+                numberLabel.text = numbersMutableArray[index];
+            }
             [numberLabel setNeedsDisplay];
             return;
         }
