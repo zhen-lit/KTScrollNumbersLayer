@@ -146,6 +146,9 @@
                 if (numberChar < '0' || numberChar > '9') {
                     [interceptArray addObject:[self splitWithStringAttribute:[string substringWithRange:NSMakeRange(location, index + 1 - location)]]];
                     location = index + 1;
+                    if (string.length > index) {
+                        [interceptArray addObject:[self splitWithStringAttribute:[string substringWithRange:(NSRange){location, string.length - location}]]];
+                    }
                 }
             }
         } else {
