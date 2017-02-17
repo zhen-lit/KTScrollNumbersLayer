@@ -60,10 +60,10 @@
     _fromString = fromString;
 }
 
-- (void)animationFromString:(NSString *)toString {
+- (void)animationFromString:(NSString *)fromString toString:(NSString *)toString {
     [self setToString:toString];
+    [self setFromString:fromString];
     [self startAnimation];
-    _fromString = toString;
 }
 
 - (void)startAnimation {
@@ -111,7 +111,7 @@
         if (toMutableArray.count > 0 && fromMutableArray.count > 0) {
             NSString *temp = [[toMutableArray objectAtIndex:index] lastObject];
             NSString *ftemp = [[fromMutableArray objectAtIndex:index] lastObject];
-            if (![temp isEqualToString: ftemp]) {
+            if ([self verifierNumbersWithString:temp] != [self verifierNumbersWithString:ftemp]) {
                 [[fromMutableArray objectAtIndex:index] removeAllObjects];
                 if (![self verifierNumbersWithString:temp]) {
                     [[fromMutableArray objectAtIndex:index] addObject:temp];

@@ -9,7 +9,9 @@
 #import "ViewController.h"
 #import "KTScrollNumbersLayer/KTScrollNumbersLayer.h"
 
-@interface ViewController () <UIScrollViewDelegate>
+@interface ViewController () <UIScrollViewDelegate> {
+    NSString *tempString;
+}
 
 @property (strong, nonatomic) KTScrollNumbersLayer *scrollNumbersLayer;
 @property (strong, nonatomic) UIButton *button;
@@ -39,9 +41,10 @@
 }
 
 - (void)setTotalCount {
-    NSString *toString = [NSString stringWithFormat:@"%d亿%d万", rand()%1000, rand()%1000];
+    NSString *toString = [NSString stringWithFormat:@"%d%d", rand()%1000, rand()%1000];
     NSLog(@"----%@", toString);
-    [self.scrollNumbersLayer animationFromString:toString];
+    [self.scrollNumbersLayer animationFromString:tempString toString:toString];
+    tempString = toString;
 }
 
 @end
