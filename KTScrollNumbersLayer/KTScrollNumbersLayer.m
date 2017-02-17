@@ -17,11 +17,9 @@
     NSMutableArray *numberLabelsMutableArray;
 }
 
-@property (assign, nonatomic) KTScrollNumbersLayerType type;
 @property (strong, nonatomic) NSString *fromString;
 @property (strong, nonatomic) NSString *toString;
 @property (assign, nonatomic) CFTimeInterval duration;
-@property (strong, nonatomic) UIColor *textColor;
 
 @end
 
@@ -64,16 +62,9 @@
 
 - (void)animationFromString:(NSString *)toString {
     [self setToString:toString];
-//    [self setFromString:fromString];
     [self startAnimation];
     _fromString = toString;
 }
-
-//- (void)animationFromString:(NSString *)fromString toString:(NSString *)toString {
-//    [self setToString:toString];
-//    [self setFromString:fromString];
-//    [self startAnimation];
-//}
 
 - (void)startAnimation {
     [self prepareAnimations];
@@ -126,16 +117,6 @@
                     [[fromMutableArray objectAtIndex:index] addObject:temp];
                 }
             }
-//            NSMutableArray *tempArray = [NSMutableArray array];
-//            NSMutableArray *ftempArray = [NSMutableArray array];
-//            tempArray = [toMutableArray objectAtIndex:index];
-//            ftempArray = [fromMutableArray objectAtIndex:index];
-//            for (NSInteger inde = 0; inde < tempArray.count; inde ++) {
-//                if ([self verifierNumbersWithString:tempArray[inde]] != [self verifierNumbersWithString:ftempArray[inde]]) {
-//                    [ftempArray replaceObjectAtIndex:inde withObject:tempArray[inde]];
-//                }
-//            }
-//            [fromMutableArray replaceObjectAtIndex:index withObject:ftempArray];
             long tempInt = [[toMutableArray objectAtIndex:index] count] - [[fromMutableArray objectAtIndex:index] count];
             if (tempInt > 0) {
                 //补全位置
@@ -165,7 +146,7 @@
     NSString *regex = @"^[0-9]*$";
     NSPredicate *pred = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", regex];
     BOOL isMatch = [pred evaluateWithObject:string];
-//    BOOL boolean = [string stringByTrimmingCharactersInSet:[NSCharacterSet decimalDigitCharacterSet]];
+    
     return isMatch;
 }
 
