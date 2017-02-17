@@ -1,7 +1,7 @@
 # KTScrollNumbersLayer
 
 ## 介绍
-一个能够显示带单位（万～亿）数字滚动的控件，改变显示的数字时，会有一个滚动动画。<br>效果图<br>
+一个能够显示带单位（%d亿%d万）数字滚动的控件，改变显示的数字时，会有一个滚动动画。<br>效果图<br>
 ![image](https://github.com/gymg/KTScrollNumbersLayer/blob/master/numbers.gif) 
 <br>
 ## 使用
@@ -25,6 +25,8 @@
     [super viewDidLoad];
     
     self.scrollNumbersLayer = [[KTScrollNumbersLayer alloc] initWithFrame:CGRectMake(0, 64, 320, 40)];
+    self.scrollNumbersLayer.font = [UIFont systemFontOfSize:16];
+    self.scrollNumbersLayer.textColor = [UIColor blueColor]
     [self.view addSubview:self.scrollNumbersLayer];
 }
 @end
