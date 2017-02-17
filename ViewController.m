@@ -39,14 +39,9 @@
 }
 
 - (void)setTotalCount {
-    static NSString *fromString = @"0000";
     NSString *toString = [NSString stringWithFormat:@"%d亿%d万", rand()%1000, rand()%1000];
-    NSLog(@"%@----%@", fromString, toString);
-    
-    [self.scrollNumbersLayer animationFromString:fromString];
-//    [self.scrollNumbersLayer animationFromString:fromString toString:toString];
-    
-    fromString = @"1000亿";
+    NSLog(@"----%@", toString);
+    [self.scrollNumbersLayer animationFromString:toString];
 }
 
 @end
