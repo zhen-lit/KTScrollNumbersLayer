@@ -62,11 +62,18 @@
     _fromString = fromString;
 }
 
-- (void)animationFromString:(NSString *)fromString toString:(NSString *)toString {
+- (void)animationFromString:(NSString *)toString {
     [self setToString:toString];
-    [self setFromString:fromString];
+//    [self setFromString:fromString];
     [self startAnimation];
+    _fromString = toString;
 }
+
+//- (void)animationFromString:(NSString *)fromString toString:(NSString *)toString {
+//    [self setToString:toString];
+//    [self setFromString:fromString];
+//    [self startAnimation];
+//}
 
 - (void)startAnimation {
     [self prepareAnimations];
@@ -106,10 +113,29 @@
 
     NSMutableArray *toMutableArray = [NSMutableArray array];
     NSMutableArray *fromMutableArray = [NSMutableArray array];
-    toMutableArray = [self interceptWithString:self.toString];
     fromMutableArray = [self interceptWithString:self.fromString];
+    toMutableArray = [self interceptWithString:self.toString];
+    
     for (NSInteger index = 0; index < toMutableArray.count; index++) {
         if (toMutableArray.count > 0 && fromMutableArray.count > 0) {
+            NSString *temp = [[toMutableArray objectAtIndex:index] lastObject];
+            NSString *ftemp = [[fromMutableArray objectAtIndex:index] lastObject];
+            if (![temp isEqualToString: ftemp]) {
+                [[fromMutableArray objectAtIndex:index] removeAllObjects];
+                if (![self verifierNumbersWithString:temp]) {
+                    [[fromMutableArray objectAtIndex:index] addObject:temp];
+                }
+            }
+//            NSMutableArray *tempArray = [NSMutableArray array];
+//            NSMutableArray *ftempArray = [NSMutableArray array];
+//            tempArray = [toMutableArray objectAtIndex:index];
+//            ftempArray = [fromMutableArray objectAtIndex:index];
+//            for (NSInteger inde = 0; inde < tempArray.count; inde ++) {
+//                if ([self verifierNumbersWithString:tempArray[inde]] != [self verifierNumbersWithString:ftempArray[inde]]) {
+//                    [ftempArray replaceObjectAtIndex:inde withObject:tempArray[inde]];
+//                }
+//            }
+//            [fromMutableArray replaceObjectAtIndex:index withObject:ftempArray];
             long tempInt = [[toMutableArray objectAtIndex:index] count] - [[fromMutableArray objectAtIndex:index] count];
             if (tempInt > 0) {
                 //补全位置
@@ -123,6 +149,7 @@
                 }
             }
         }
+        
         //处理from从nil开始
         if (self.fromString.length > 0) {
             [charsMutableArray addObjectsFromArray:[fromMutableArray objectAtIndex:index]];
@@ -132,6 +159,14 @@
     }
     
     [self createScrollLayers];
+}
+
+- (BOOL)verifierNumbersWithString:(NSString *)string {
+    NSString *regex = @"^[0-9]*$";
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", regex];
+    BOOL isMatch = [pred evaluateWithObject:string];
+//    BOOL boolean = [string stringByTrimmingCharactersInSet:[NSCharacterSet decimalDigitCharacterSet]];
+    return isMatch;
 }
 
 //根据特殊字符截取
